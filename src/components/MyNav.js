@@ -6,16 +6,23 @@ import {
   Form,
   FormControl,
   Button,
+  Row,
+  Col,
 } from "react-bootstrap";
 import JobPost from "./JobPost";
 import Home from "./Home"
-export default class MyNav extends Component {
+import SingleJob from "./SingleJob";
+import {Link,withRouter} from "react-router-dom"
+import { connect } from "react-redux";
+
+const mapStateToProps = (state) => state;
+class MyNav extends Component {
   state = {
     newSearch: { position: "", location: "" },
     jobs: [],
-    selectedJob: null,
+    jobSelected: {},
   };
-  changeJob = (id) => this.setState({ jobSelected: id });
+  
   changeHandler = (e) => {
     this.setState({
       newSearch: {
@@ -44,15 +51,17 @@ export default class MyNav extends Component {
       console.log(error);
     }
   };
+  changeJob = (id) => this.setState({ jobSelected: id });
   render() {
     console.log(this.state.jobs, "FOUND JOBS");
     return (
       <div>
         <Navbar sticky="top" bg="dark" variant="dark">
           <Container>
-            <Navbar.Brand href="#home">
+            <Link to="/"><Navbar.Brand>
               <strong>GitHub</strong>Jobs
-            </Navbar.Brand>
+            </Navbar.Brand></Link>
+            
             <Form inline>
               <FormControl
                 type="text"
@@ -75,22 +84,31 @@ export default class MyNav extends Component {
               </Button>
             </Form>
             <Nav className="ml-auto">
-              <Nav.Link href="#home">All jobs</Nav.Link>
+
+              <Nav.Link>All jobs</Nav.Link>
               <Nav.Link href="#features">Post a job</Nav.Link>
+              <button onClick={() => this.props.history.push("/favourites")}>Favourites</button>
             </Nav>
           </Container>
         </Navbar>
-        {this.state.jobs.length > 0 ? (
-          <JobPost
+        <Container className="mt-3">
+          <Row >
+          <Col lg={4}>
+          <JobPost 
             key={this.state.jobs.id}
             job={this.state.jobs}
             changeJob={this.changeJob}
-            jobSelected={this.state.selectedJob}
+            jobSelected={this.state.jobSelected}
           />
-        ) : (
-          <Home />
-        )}
+          </Col>
+          <Col lg={8}>
+            <SingleJob
+          job={this.state.jobs}
+          jobSelected={this.state.jobSelected} /></Col>)
+        </Row>
+        </Container>
       </div>
     );
   }
 }
+export default connect (mapStateToProps)(withRouter(MyNav))

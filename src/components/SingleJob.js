@@ -1,11 +1,37 @@
 import React, { Component } from "react";
 import { Card, Row, Col } from "react-bootstrap";
 import Moment from 'react-moment';
+import { connect } from "react-redux";
+import StarBorderIcon from '@material-ui/icons/StarBorder';
 
-export default class SingleJob extends Component {
+const mapStateToProps = (state) => state;
+
+const mapDispatchToProps = (dispatch) => ({
+  addToFavourites: (job) => 
+  dispatch({
+    type:"ADD_TO_FAVOURITES",
+    playload:job.id,
+  })
+});
+console.log(mapStateToProps,"STATEEEE",mapDispatchToProps)
+class SingleJob extends Component {
+constructor(props){
+  super(props);
+  this.state = {
+    job: {},
+  }
+}
+componentDidUpdate(prevProps, prevState) {
+  if (prevProps.jobSelected !== this.props.jobSelected) {
+    this.setState({
+      job: this.props.job.find(j => j.id === this.props.jobSelected)
+    })
+  }
+  console.log(prevProps.jobSelected,"Component updated")
+} //replace(/<[^>]*>/g, '')
   render() {
-    console.log(this.props.job, "single job");
-    const { job } = this.props;
+    console.log(this.state.job, "single job");
+    const { job } = this.state;
     return (
       <div sticky="top">
         <Row >
@@ -20,8 +46,11 @@ export default class SingleJob extends Component {
         <Row>
           <Card style={{ width: "50rem" ,marginTop:"34px"}}>
               <Card.Header>
-              <Card.Text className="text-muted">
+              <Card.Text className="text-muted ml-auto">
               Posted at: <Moment format="Do MMMM YYYY">{job.created_at}</Moment> | {job.type}
+              </Card.Text>
+              <Card.Text className="text-muted mr-auto">
+              <StarBorderIcon onClick={() => this.props.addToFavourites(job)} /> Save this job
               </Card.Text>
               </Card.Header>
             <Card.Body>
@@ -30,11 +59,11 @@ export default class SingleJob extends Component {
               Location: {job.location}
               </Card.Text>
               <Card.Text>
-              {job.description.replace(/<\/?[^>]+(>|$)/g, "")}
+              {job.description}
               </Card.Text>
             </Card.Body>
               <Card.Footer>
-                  <Card.Link target="_blank" rel="noopener noreferrer" href={job.how_to_apply.replace(/<\/?[^>]+(>|$)/g, "")}>Apply here</Card.Link>
+                  <Card.Link target="_blank" rel="noopener noreferrer" href={job.how_to_apply}>Apply here</Card.Link>
               </Card.Footer>
           </Card>
         </Row>
@@ -42,3 +71,4 @@ export default class SingleJob extends Component {
     );
   }
 }
+export default connect(mapStateToProps,mapDispatchToProps)(SingleJob)

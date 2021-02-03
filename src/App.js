@@ -2,16 +2,16 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import MyNav from "./components/MyNav";
 import JobPost from "./components/JobPost"
 import { Router, Route } from "react-router-dom";
+import { createBrowserHistory } from 'history';
+import Favourites from "./components/Favourites"
 
-function App() {
+const App = () => {
+  const history = createBrowserHistory();
   return (
-   /* <Router>
-      <Route exact path='/' component={ MyNav } />
-      <Route path="/job" exact render={(props) => (<JobPost {...props} />)} /> 
-    </Router> */
-    <div>
-      <MyNav />
-    </div>
+    <Router history={history}>
+      <Route path="/" exact component={MyNav} />
+      <Route path="/favourites" exact component={Favourites} />
+    </Router>
   );
 }
 
