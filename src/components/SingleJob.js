@@ -10,7 +10,7 @@ const mapDispatchToProps = (dispatch) => ({
   addToFavourites: (job) => 
   dispatch({
     type:"ADD_TO_FAVOURITES",
-    playload:job.id,
+    playload:job,
   })
 });
 console.log(mapStateToProps,"STATEEEE",mapDispatchToProps)
@@ -59,7 +59,7 @@ componentDidUpdate(prevProps, prevState) {
               Location: {job.location}
               </Card.Text>
               <Card.Text>
-              {job.description}
+              <p dangerouslySetInnerHTML={{__html:job.description}}></p>
               </Card.Text>
             </Card.Body>
               <Card.Footer>

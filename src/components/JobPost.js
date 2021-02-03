@@ -21,7 +21,7 @@ class JobPost extends Component {
                   </Card>
                 ))}
             </div>
-        )
+        )   
     }
 }
 export default JobPost
