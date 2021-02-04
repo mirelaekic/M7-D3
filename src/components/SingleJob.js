@@ -4,32 +4,24 @@ import Moment from 'react-moment';
 import { connect } from "react-redux";
 import StarBorderIcon from '@material-ui/icons/StarBorder';
 
-const mapStateToProps = (state) => state;
-
-const mapDispatchToProps = (dispatch) => ({
-  addToFavourites: (job) => 
-  dispatch({
-    type:"ADD_TO_FAVOURITES",
-    playload:job,
-  })
-});
-console.log(mapStateToProps,"STATEEEE",mapDispatchToProps)
 class SingleJob extends Component {
-constructor(props){
-  super(props);
-  this.state = {
-    job: {},
+  constructor(props){
+    super(props);
+    this.state = {
+      job: {},
+      favourites: []
+    }
   }
-}
-componentDidUpdate(prevProps, prevState) {
-  if (prevProps.jobSelected !== this.props.jobSelected) {
-    this.setState({
-      job: this.props.job.find(j => j.id === this.props.jobSelected)
-    })
-  }
-  console.log(prevProps.jobSelected,"Component updated")
-} //replace(/<[^>]*>/g, '')
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.jobSelected !== this.props.jobSelected) {
+      this.setState({
+        job: this.props.job.find(j => j.id === this.props.jobSelected)
+      })
+    }
+    console.log(prevProps.jobSelected,"Component updated")
+  } 
   render() {
+    console.log(this.state.favourites,"FAVSSS")
     console.log(this.state.job, "single job");
     const { job } = this.state;
     return (
@@ -50,7 +42,7 @@ componentDidUpdate(prevProps, prevState) {
               Posted at: <Moment format="Do MMMM YYYY">{job.created_at}</Moment> | {job.type}
               </Card.Text>
               <Card.Text className="text-muted mr-auto">
-              <StarBorderIcon onClick={() => this.props.addToFavourites(job)} /> Save this job
+              <StarBorderIcon onClick={() => this.props.addToFavourites(this.state.job)} /> Save this job
               </Card.Text>
               </Card.Header>
             <Card.Body>
@@ -71,4 +63,16 @@ componentDidUpdate(prevProps, prevState) {
     );
   }
 }
+const mapStateToProps = (state) => state;
+
+const mapDispatchToProps = (dispatch) => ({
+  addToFavourites: (job) => 
+  dispatch({
+    type:"ADD_TO_FAVOURITES",
+    playload:job,
+  })
+  
+});
+console.log(mapDispatchToProps.addToFavourites,"ADDED TO FAVVV")
+console.log(mapStateToProps,"STATEEEE",mapDispatchToProps)
 export default connect(mapStateToProps,mapDispatchToProps)(SingleJob)

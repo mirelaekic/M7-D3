@@ -1,17 +1,18 @@
-export default function (state = {favorites:[]}, action) {
+export default function (state = {favourites:[]}, action) {
     switch(action.type) {
         case "ADD_TO_FAVOURITES":
             return {
-                ...state,
-                favourites:  [...state.favorites,action.payload]
+                favourites:  [...state.favourites,action.payload]
             };
         case "REMOVE_FROM_FAVOURITES":
             return {
                 ...state.favourites,
-                favorites: state.favourites.job.filter(
+                favourites: state.favourites.job.filter(
                     ({id}) => id !== action.playload.id
                     )
             };
 
+            default:
+                return state
     }
 }

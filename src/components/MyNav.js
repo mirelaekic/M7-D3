@@ -16,6 +16,7 @@ import {Link,withRouter} from "react-router-dom"
 import { connect } from "react-redux";
 
 const mapStateToProps = (state) => state;
+
 class MyNav extends Component {
   state = {
     newSearch: { position: "", location: "" },
